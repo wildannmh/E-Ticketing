@@ -41,13 +41,9 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user)
     {
-        return match ($user->role) {
-            'admin' => redirect()->route('admin.dashboard'),
-            'organizer' => redirect()->route('organizer.dashboard'),
-            'user' => redirect()->route('user.dashboard'),
-            default => redirect('/'),
-        };
+        return redirect()->route('dashboard');
     }
+
 
 
 }

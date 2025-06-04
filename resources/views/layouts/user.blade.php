@@ -47,7 +47,7 @@
                     {{-- Menu tengah --}}
                     <ul class="navbar-nav mx-auto">
                         <li class="nav-item">
-                            <a href="{{ route('user.dashboard') }}" class="nav-link {{ request()->routeIs('user.dashboard') ? 'active' : '' }}">
+                            <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
                                 Dashboard
                             </a>
                         </li>

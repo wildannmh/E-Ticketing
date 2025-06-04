@@ -13,22 +13,13 @@ Route::get('/', function () {
 
 Auth::routes();
 
-// Dashboard umum yang redirect ke dashboard sesuai role
-Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-});
+Route::middleware(['auth'])->get('/dashboard', function () {
+    $role = auth()->user()->role;
 
-// Admin dashboard
-Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
-});
-
-// Organizer (penyelenggara) dashboard
-Route::middleware(['auth', 'role:organizer'])->group(function () {
-    Route::get('/organizer', [OrganizerController::class, 'index'])->name('organizer.dashboard');
-});
-
-// User dashboard
-Route::middleware(['auth', 'role:user'])->group(function () {
-    Route::get('/user', [UserController::class, 'index'])->name('user.dashboard');
-});
+    return match ($role) {
+        'admin' => view('admin.dashboard'),
+        'organizer' => view('organizer.dashboard'),
+        'user' => view('user.dashboard'),
+        default => abort(403),
+    };
+})->name('dashboard');
