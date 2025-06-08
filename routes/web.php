@@ -11,6 +11,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/event-detail', function () {
+    return view('event-detail');
+});
+
+Route::get('/event', function () {
+    return view('event');
+});
+
 Auth::routes();
 
 Route::middleware(['auth'])->get('/dashboard', function () {
