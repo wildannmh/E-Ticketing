@@ -20,6 +20,21 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url('/tentang-kami') }}">Tentang Kami</a>
                 </li>
+                @auth
+                    <!-- My Event - Tampilkan hanya untuk role 'organizer' -->
+                    @if(auth()->user()->role === 'organizer')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('organizer.dashboard') }}">My Event</a>
+                        </li>
+                    @endif
+
+                    <!-- My Admin - Tampilkan hanya untuk role 'admin' -->
+                    @if(auth()->user()->role === 'admin')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('admin.dashboard') }}">My Admin</a>
+                        </li>
+                    @endif
+                @endauth
             </ul>
             
             <div class="d-flex align-items-center">

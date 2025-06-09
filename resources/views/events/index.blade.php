@@ -7,8 +7,18 @@
     <!-- Breadcrumb -->
     <nav aria-label="breadcrumb" class="mt-3">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ url('/') }}" class="text-decoration-none"><i class="fas fa-home me-1"></i>Home</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Cari Event</li>
+            @foreach($breadcrumbs as $item)
+                @if(isset($item['url']))
+                    <li class="breadcrumb-item">
+                        <a href="{{ $item['url'] }}" class="text-decoration-none">
+                            @if($loop->first)<i class="fas fa-home me-1"></i>@endif
+                            {{ $item['text'] }}
+                        </a>
+                    </li>
+                @else
+                    <li class="breadcrumb-item active" aria-current="page">{{ $item['text'] }}</li>
+                @endif
+            @endforeach
         </ol>
     </nav>
 
@@ -108,10 +118,10 @@
     </div>
 </div>
 
-<div class="d-flex flex-column align-items-center mt-4">
+<div class="d-flex flex-column align-items-center pt-4" style="background: var(--bg-default);">
     {{ $events->withQueryString()->links() }}
 
-    <small class="text-muted mt-2">
+    <small class="text-muted mb-4">
         Showing {{ $events->count() }} of {{ $events->total() }} events
     </small>
 </div>
@@ -129,10 +139,6 @@
         width: 20rem;
         height: 28rem;
     }
-
-    .breadcrumb-item + .breadcrumb-item::before {
-        content: ">";
-    }
     
     .position-absolute.bottom-3 {
         bottom: 1rem;
@@ -145,8 +151,6 @@
     .position-absolute.start-3 {
         left: 1rem;
     }
-
-    /* Event grid centered layout */
 </style>
 
 <script>

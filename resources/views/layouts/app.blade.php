@@ -331,6 +331,10 @@
             background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
             transition: all 0.5s ease;
         }
+
+        .breadcrumb-item + .breadcrumb-item::before {
+            content: ">";
+        }
     </style>
     
     @stack('styles')

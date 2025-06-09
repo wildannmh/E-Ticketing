@@ -32,7 +32,12 @@ class EventController extends Controller
             ->distinct()
             ->pluck('category');
 
-        return view('events.index', compact('events', 'categories', 'search', 'category'));
+        $breadcrumbs = [
+            ['url' => url('/'), 'text' => 'Home'],
+            ['text' => 'Cari Event']
+        ];
+
+        return view('events.index', compact('events', 'categories', 'search', 'category', 'breadcrumbs'));
     }
 
 
@@ -70,6 +75,7 @@ class EventController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'location' => 'required|string|max:255',
+            'location_link' => 'nullable|string',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
             'banner_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -88,13 +94,12 @@ class EventController extends Controller
 
         $event = Event::create($validated);
 
-        return redirect()->route('events.show', $event)->with('success', 'Event created successfully!');
+        return redirect()->route('events.index', $event)->with('success', 'Event created successfully!');
     }
 
     public function edit(Event $event)
     {
-        $organizers = Organizer::all();
-        return view('events.edit', compact('event', 'organizers'));
+        return view('events.show', compact('event'));
     }
 
     public function update(Request $request, Event $event)
@@ -104,6 +109,7 @@ class EventController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'location' => 'required|string|max:255',
+            'location_link' => 'nullable|string',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
             'banner_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',

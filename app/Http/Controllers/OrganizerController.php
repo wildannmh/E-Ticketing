@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\OrganizerRequest;
 use App\Models\Organizer;
+use App\Models\User;
+use App\Models\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -41,7 +43,16 @@ class OrganizerController extends Controller
 
     public function dashboard()
     {
-        $events = Auth::user()->organizer->events()->latest()->paginate(10);
-        return view('organizer.dashboard', compact('events'));
+        $organizer = auth()->user();
+
+        $events = $organizer->events()->with('tickets')->latest()->get();
+        $totalEvents = $events->count();
+        $totalTickets = $events->flatMap->tickets->sum('quantity');
+        $ticketsSold = $events->flatMap->tickets->sum(function ($ticket) {
+            return $ticket->quantity - $ticket->remaining;
+        });
+
+        return view('organizer.dashboard', compact('events', 'totalEvents', 'totalTickets', 'ticketsSold'));
     }
+
 }

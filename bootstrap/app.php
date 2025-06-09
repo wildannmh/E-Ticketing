@@ -19,7 +19,6 @@ return Application::configure(basePath: dirname(__DIR__))
             'auth' => Authenticate::class,
             'guest' => RedirectIfAuthenticated::class,
             'role' => RoleMiddleware::class,
-            'is_organizer' => \App\Http\Middleware\IsOrganizer::class,
             'admin' => \App\Http\Middleware\CheckAdmin::class,
             'organizer' => \App\Http\Middleware\CheckOrganizer::class,
         ]);

@@ -47,15 +47,94 @@
                     <h5 class="card-title">Lokasi</h5>
                     <div class="row">
                         <div class="col-12">
-                            <div style="height: 300px; background-color: #e9ecef; border-radius: 8px; position: relative;">
-                                <iframe 
-                                    src="https://maps.google.com/maps?q={{ urlencode($event->location) }}&output=embed" 
-                                    width="100%" 
-                                    height="300" 
-                                    style="border:0; border-radius: 8px;" 
-                                    allowfullscreen="" 
-                                    loading="lazy">
-                                </iframe>
+                            <div style="height: 300px; background-color: #e9ecef; border-radius: 8px; position: relative; text-align: center;">
+                                @if(!empty($event->location_link))
+                                    @if(Str::contains($event->location_link, 'embed'))
+                                        {{-- Tampilkan iframe jika link embed --}}
+                                        <iframe 
+                                            src="{{ $event->location_link }}" 
+                                            width="100%" 
+                                            height="300" 
+                                            style="border:0; border-radius: 8px;" 
+                                            allowfullscreen="" 
+                                            loading="lazy">
+                                        </iframe>
+                                    @else
+                                        {{-- Lokasi Link Gmaps --}}
+                                        <div style="height: 300px; background-color: #e9ecef; border-radius: 8px; position: relative; overflow: hidden;">
+                                            {{-- Overlay menutupi seluruh map --}}
+                                            <div style="
+                                                position: absolute;
+                                                top: 0;
+                                                left: 0;
+                                                width: 100%;
+                                                height: 100%;
+                                                background-color: rgba(0, 0, 0, 0.6);
+                                                color: white;
+                                                z-index: 2;
+                                                display: flex;
+                                                flex-direction: column;
+                                                align-items: center;
+                                                justify-content: center;
+                                                text-align: center;
+                                                padding: 20px;
+                                                border-radius: 8px;
+                                                    ">
+                                                <p style="font-size: 1.1rem; font-style: italic; margin-bottom: 15px;">
+                                                    Link map tidak mendukung, buka di Google Maps
+                                                </p>
+                                                @if(!empty($event->location_link))
+                                                    <a href="{{ $event->location_link }}" target="_blank" class="btn btn-outline-light">
+                                                        Lihat Lokasi di Google Maps
+                                                    </a>
+                                                @endif
+                                            </div>
+
+                                            {{-- Iframe Google Maps --}}
+                                            <iframe 
+                                                src="https://www.google.com/maps/embed?..." 
+                                                width="100%" 
+                                                height="300" 
+                                                style="border:0; border-radius: 8px;" 
+                                                allowfullscreen="" 
+                                                loading="lazy">
+                                            </iframe>
+                                        </div>
+                                    @endif
+                                @else
+                                    {{-- Lokasi default jika kosong --}}
+                                    <div style="height: 300px; background-color: #e9ecef; border-radius: 8px; position: relative; overflow: hidden;">
+                                        {{-- Overlay teks di atas peta --}}
+                                        <div style="
+                                            position: absolute;
+                                            top: 0;
+                                            left: 0;
+                                            width: 100%;
+                                            height: 100%;
+                                            background-color: rgba(0, 0, 0, 0.5); /* semi transparan */
+                                            z-index: 2;
+                                            display: flex;
+                                            align-items: center;
+                                            justify-content: center;
+                                            color: white;
+                                            font-size: 1.2rem;
+                                            font-style: italic;
+                                            border-radius: 8px;
+                                            ">
+                                            Lokasi belum di set
+                                        </div>
+
+                                        {{-- Iframe Google Maps --}}
+                                        <iframe 
+                                            src="https://www.google.com/maps/embed?..." 
+                                            width="100%" 
+                                            height="300" 
+                                            style="border:0; border-radius: 8px;" 
+                                            allowfullscreen="" 
+                                            loading="lazy">
+                                        </iframe>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -198,10 +277,6 @@
 
     .card-img-top {
         border-radius: 0.375rem 0.375rem 0 0;
-    }
-
-    .breadcrumb-item + .breadcrumb-item::before {
-        content: ">";
     }
 
     .btn-sm {

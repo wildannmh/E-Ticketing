@@ -14,6 +14,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('description');
             $table->string('location');
+            $table->text('location_link')->nullable();
             $table->dateTime('start_date');
             $table->dateTime('end_date');
             $table->string('banner_image')->nullable();

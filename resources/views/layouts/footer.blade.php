@@ -1,4 +1,4 @@
-<footer class="bg-white border-top mt-5">
+<footer class="border-top pt-5" style="background: var(--bg-default);">
     <div class="container py-4">
         <div class="row">
             <div class="col-md-6">
