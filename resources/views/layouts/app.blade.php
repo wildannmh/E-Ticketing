@@ -20,6 +20,7 @@
         :root {
             --gradient-start: #6366F1;
             --gradient-end: #3B82F6;
+            --bg-default: #F1F7FE;
         }
 
         * {
@@ -116,6 +117,10 @@
             z-index: 3;
         }
 
+        .btn-outline-light:hover {
+            color: var(--gradient-end);
+        }
+
         /* Tombol Outline Gradient */
         .btn-outline-gradient {
             color: var(--gradient-start);
@@ -153,11 +158,49 @@
         
         /* Main Content */
         .hero-section {
-            background: linear-gradient(135deg, #714EF4 30%, #3B82F6 100%);
+            background: linear-gradient(135deg, #714EF4 20%, #3B82F6 100%);
             color: white;
             padding-top: 180px;
             position: relative;
             overflow: hidden;
+        }
+
+        /* Shine overlay (white radial gradient) */
+        .hero-section::before {
+            background: radial-gradient(
+                circle at 70% 30%,
+                rgba(0, 0, 0, 0.3) 0%,
+                rgba(255, 255, 255, 0) 60%
+            );
+            animation: pulseShine 5s infinite;
+            z-index: 0;
+        }
+
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.2) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: skewX(-20deg);
+            animation: slideShine 5s infinite 1s;
+        }
+
+        @keyframes pulseShine {
+            0%, 100% { opacity: 0; }
+            10%, 30% { opacity: 0.6; }
+        }
+
+        @keyframes slideShine {
+            0% { left: -100%; }
+            100% { left: 150%; }
         }
 
         .radius-top {

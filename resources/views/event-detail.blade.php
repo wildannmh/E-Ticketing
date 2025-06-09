@@ -18,7 +18,7 @@
         <div class="col-lg-8">
             <!-- Event Banner -->
             <div class="card mb-4 w-100 h-auto rounded-3">
-                <img src="{{ asset('images/welcome/cat.jpg') }}" class="card-img-top h-100 rounded-3" alt="Atrium Eastcoast 2025" style="object-fit: cover;">
+                <img src="images/welcome/cat.jpg" class="card-img-top h-100 rounded-3" alt="Atrium Eastcoast 2025" style="object-fit: cover;">
             </div>
 
             <!-- Event Description -->
@@ -164,7 +164,7 @@
     .container-fluid {
         padding: 0 50px;
         padding-top: 80px;
-        background: #F1F7FE;
+        background: var(--bg-default);
     }
 
     .sticky-top {

@@ -23,12 +23,12 @@
             </ul>
             
             <div class="d-flex align-items-center">
-                <div class="input-group me-3" style="width: 250px;">
+                {{-- <div class="input-group me-3" style="width: 250px;">
                     <input type="text" class="form-control" placeholder="Cari event..." style="border-right: none;">
                     <span class="input-group-text bg-white" style="border-left: none;">
                         <i class="fas fa-search text-muted"></i>
                     </span>
-                </div>
+                </div> --}}
                 
                 <a href="{{ url('/login') }}" class="btn btn-outline-gradient btn-login me-2">Log In</a>
                 <a href="{{ url('/register') }}" class="btn btn-gradient btn-signup">Sign Up</a>

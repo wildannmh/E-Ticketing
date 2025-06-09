@@ -167,7 +167,7 @@
         padding: 0 50px;
         padding-top: 80px;
         padding-bottom: 1px;
-        background: #F1F7FE;
+        background: var(--bg-default);
     }
 
     .card {

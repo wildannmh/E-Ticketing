@@ -19,6 +19,10 @@ Route::get('/event', function () {
     return view('event');
 });
 
+Route::get('/tentang-kami', function () {
+    return view('tentang-kami');
+});
+
 Auth::routes();
 
 Route::middleware(['auth'])->get('/dashboard', function () {

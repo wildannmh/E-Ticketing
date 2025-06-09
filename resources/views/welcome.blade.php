@@ -266,7 +266,7 @@
     <div class="container text-center">
         <div class="row justify-content-center">
             <div class="col-lg-8">
-                <h2 class="h3 fw-bold mb-4">Punya event ? Jual Tiketmu di 🎫 moeket !</h2>
+                <h2 class="h3 fw-bold mb-4">Punya event ? Jual Tiketmu di <span style="color: #ffd700;">🎫 moeket</span> !</h2>
                 <p class="lead mb-4">Platform terpercaya untuk menjual tiket event, solusi cerdas untuk mensukseskan event Anda!</p>
                 <a href="#" class="btn btn-light btn-lg px-4">Daftar Sebagai Penyelenggara ></a>
             </div>
