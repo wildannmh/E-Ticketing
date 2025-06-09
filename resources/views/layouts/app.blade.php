@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <title>@yield('title', 'Moeeket - Temukan Event Terbaik')</title>
     
     <!-- Bootstrap CSS -->
@@ -217,8 +221,8 @@
         }
 
         .card {
-            width: 22rem;
-            height: 30rem;
+            width: 20rem;
+            height: 28rem;
         }
         
         .card-hover {
@@ -252,6 +256,11 @@
             display: flex;
             gap: 15px;
             align-items: center;
+            text-decoration: none;
+        }
+
+        .card-actions a {
+            text-decoration: none;
         }
 
         .btn-detail {
@@ -291,7 +300,7 @@
             color: #ff6b6b;
         }
         
-        .btn-favorite.active {
+        .btn-favorite.favorited {
             background: #ff6b6b;
             border-color: #ff6b6b;
             color: white;
@@ -338,30 +347,44 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        function toggleFavorite(button) {
+        function toggleFavorite(button, eventId, isFavorited) {
             const icon = button.querySelector('i');
-            const isActive = button.classList.contains('active');
-            
-            if (isActive) {
-                button.classList.remove('active');
-                icon.className = 'far fa-heart';
-            } else {
-                button.classList.add('active');
-                icon.className = 'fas fa-heart';
-            }
-            
-            // Animasi kecil
-            button.style.transform = 'scale(1.2)';
-            setTimeout(() => {
-                button.style.transform = '';
-            }, 200);
-        }
-        
-        function showDetail() {
-            alert('Menampilkan detail kegiatan volunteer...');
-            // Di sini Anda bisa menambahkan logika untuk membuka modal atau pindah ke halaman detail
+            const token = document.querySelector('meta[name="csrf-token"]').content;
+            const url = isFavorited 
+                ? `/events/${eventId}/unfavorite` 
+                : `/events/${eventId}/favorite`;
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': token,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    icon.classList.toggle('far');
+                    icon.classList.toggle('fas');
+                    button.classList.toggle('favorited');
+                    button.setAttribute('onclick', `toggleFavorite(this, ${eventId}, ${!isFavorited})`);
+
+                    // Animasi kecil
+                    button.style.transform = 'scale(1.2)';
+                    setTimeout(() => button.style.transform = '', 200);
+                } else {
+                    alert('Gagal mengupdate favorit.');
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                alert('Terjadi kesalahan saat memproses favorit.');
+            });
         }
     </script>
+
+
     @stack('scripts')
 </body>
 </html>

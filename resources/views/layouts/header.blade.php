@@ -15,7 +15,7 @@
                     <a class="nav-link" href="{{ url('/') }}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/event') }}">Cari Event</a>
+                    <a class="nav-link" href="{{ route('events.index') }}">Cari Event</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url('/tentang-kami') }}">Tentang Kami</a>
@@ -30,8 +30,29 @@
                     </span>
                 </div> --}}
                 
-                <a href="{{ url('/login') }}" class="btn btn-outline-gradient btn-login me-2">Log In</a>
-                <a href="{{ url('/register') }}" class="btn btn-gradient btn-signup">Sign Up</a>
+                @auth
+                    <div class="dropdown">
+                        <a class="d-flex align-items-center text-decoration-none dropdown-toggle text-muted" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                           <img src="{{ auth()->user()->profile_photo ? asset('storage/' . auth()->user()->profile_photo) : asset('images/profil-img.jpg') }}"
+                                alt="Profile"
+                                class="rounded-circle me-2"
+                                style="width: 35px; height: 35px; object-fit: cover;">
+                            <span class="fw-semibold px-1">{{ auth()->user()->name }}</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="{{ route('profile.show') }}">Lihat Profil</a></li>
+                            <li>
+                                <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item">Logout</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                @else
+                    <a href="{{ route('login') }}" class="btn btn-outline-gradient btn-login me-2">Log In</a>
+                    <a href="{{ route('register') }}" class="btn btn-gradient btn-signup">Sign Up</a>
+                @endauth
             </div>
         </div>
     </div>

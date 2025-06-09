@@ -178,15 +178,6 @@
                         required autocomplete="new-password" />
                 </div>
 
-                <div class="mb-4">
-                    <label for="role" class="form-label">Daftar sebagai</label>
-                    <select name="role" id="role" class="form-select" required>
-                        <option value="">Pilih peran Anda</option>
-                        <option value="user" {{ old('role') == 'user' ? 'selected' : '' }}>Pengguna</option>
-                        <option value="organizer" {{ old('role') == 'organizer' ? 'selected' : '' }}>Penyelenggara</option>
-                    </select>
-                </div>
-
                 <button type="submit" class="btn btn-register mb-3">{{ __('Register') }}</button>
 
                 <div class="login-link">

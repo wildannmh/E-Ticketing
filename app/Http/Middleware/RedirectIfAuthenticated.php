@@ -20,8 +20,7 @@ class RedirectIfAuthenticated
                 // Redirect user sesuai role
                 return match ($role) {
                     'admin' => redirect('/admin'),
-                    'organizer' => redirect('/organizer'),
-                    'user' => redirect('/user'),
+                    'organizer', 'user' => redirect('/'),
                     default => redirect('/dashboard'),
                 };
             }

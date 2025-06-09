@@ -28,7 +28,7 @@
                 <div class="row g-3 mb-5 justifice-content-center align-items-center">
                     <div class="col-md-3 col-6">
                         <div class="position-relative">
-                            <img src="images/welcome/cat.jpg" class="card-img-top h-100 rounded-3 rounded-3 w-100"
+                            <img src="images/about/about3.jpg" class="card-img-top h-100 rounded-3 rounded-3 w-100"
                                 style="aspect-ratio: 1/1; object-fit: cover; background: linear-gradient(45deg, #ff6b6b, #ee5a24);" 
                                 alt="Tentang image">
                         </div>
@@ -36,7 +36,7 @@
                     
                     <div class="col-md-3 col-6">
                         <div class="position-relative">
-                            <img src="images/welcome/cat.jpg" class="card-img-top h-100 rounded-3 rounded-3 w-100"
+                            <img src="images/about/about1.jpg" class="card-img-top h-100 rounded-3 rounded-3 w-100"
                                 class="img-fluid rounded-3 w-100" 
                                 style="aspect-ratio: 4/3; object-fit: cover; background: linear-gradient(45deg, #26de81, #20bf6b);" 
                                 alt="Tentang image">
@@ -45,7 +45,7 @@
                     
                     <div class="col-md-3 col-6">
                         <div class="position-relative">
-                            <img src="images/welcome/cat.jpg" class="card-img-top h-100 rounded-3 rounded-3 w-100"
+                            <img src="images/about/about2.jpg" class="card-img-top h-100 rounded-3 rounded-3 w-100"
                                 style="aspect-ratio: 1/1; object-fit: cover; background: linear-gradient(45deg, #ff6b6b, #ee5a24);" 
                                 alt="Tentang image">
                         </div>
@@ -53,7 +53,7 @@
                     
                     <div class="col-md-3 col-6">
                         <div class="position-relative">
-                            <img src="images/welcome/cat.jpg" class="card-img-top h-100 rounded-3 rounded-3 w-100"
+                            <img src="images/about/about4.jpg" class="card-img-top h-100 rounded-3 rounded-3 w-100"
                                 class="img-fluid rounded-3 w-100" 
                                 style="aspect-ratio: 4/3; object-fit: cover; background: linear-gradient(45deg, #26de81, #20bf6b);" 
                                 alt="Tentang image">

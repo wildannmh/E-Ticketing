@@ -31,68 +31,48 @@
         </button>
         
         <div class="scrolling-wrapper">
-            <div class="card card-hover shadow-sm border-0 rounded-4 overflow-hidden">
-            <div class="position-relative h-100">
-                <img src="images/welcome/ryo-img.jpg" alt="Atrium Eastcoast 2025" class="w-100 h-100 object-fit-cover">
-                <div class="overlay position-absolute bottom-0 start-0 w-100 text-white">
-                    <span class="small card-category">Expo</span>
-                    <h5 class="card-title mb-1">Atrium Eastcoast 2025</h5>
-                    <p class="small mb-1"><i class="fas fa-map-marker-alt me-1"></i>Pakuwon City Mall, Surabaya</p>
-                    <p class="small mb-1"><i class="fas fa-calendar me-1"></i>2 Juli 2025</p>
-                    <p class="small mb-2"><i class="fas fa-tag me-1"></i>Rp 35.000</p>
-                    <div class="card-actions">
-                        <button class="btn-favorite" onclick="toggleFavorite(this)">
-                            <i class="far fa-heart"></i>
-                        </button>
-                        <a href="{{ url('/event-detail') }}" class="btn btn-detail">
-                            Lihat Detail
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
+            @forelse($popularEvents as $event)
+                <div class="card card-hover shadow-sm border-0 rounded-4 overflow-hidden">
+                    <div class="position-relative h-100">
+                        <img src="{{ $event->banner_image ? asset('storage/' . $event->banner_image) : asset('images/no-img.jpg') }}"
+                            alt="{{ $event->title }}"
+                            class="w-100 h-100 object-fit-cover">
+                        <div class="overlay position-absolute bottom-0 start-0 w-100 text-white">
+                            <span class="small card-category">{{ $event->category }}</span>
+                            <h5 class="card-title mb-1">{{ $event->title }}</h5>
+                            <p class="small mb-1"><i class="fas fa-map-marker-alt me-1"></i>{{ $event->location }}</p>
+                            <p class="small mb-1"><i class="fas fa-calendar me-1"></i>{{ \Carbon\Carbon::parse($event->start_date)->translatedFormat('d F Y') }}</p>
+                            <p class="small mb-2"><i class="fas fa-tag me-1"></i>
+                                {{ $event->tickets->min('price') ? 'Rp ' . number_format($event->tickets->min('price'), 0, ',', '.') : 'Gratis' }}
+                            </p>
+                            <div class="card-actions d-flex align-items-center gap-2">
+                                @auth
+                                    <button type="button" 
+                                        class="btn-favorite {{ auth()->user()->favorites->contains($event->id) ? 'favorited' : '' }}" 
+                                        onclick="toggleFavorite(this, {{ $event->id }}, {{ auth()->user()->favorites->contains($event->id) ? 'true' : 'false' }})">
+                                        <i class="{{ auth()->user()->favorites->contains($event->id) ? 'fas' : 'far' }} fa-heart"></i>
+                                    </button>
+                                @else
+                                    <a href="{{ route('login') }}" class="btn-favorite" title="Login untuk menyimpan favorit">
+                                        <i class="far fa-heart"></i>
+                                    </a>
+                                @endauth
 
-            <div class="card card-hover shadow-sm border-0 rounded-4 overflow-hidden">
-                <div class="position-relative h-100">
-                    <img src="images/welcome/ryo-img.jpg" alt="Bersama Mengajar" class="w-100 h-100 object-fit-cover">
-                    <div class="overlay position-absolute bottom-0 start-0 w-100 text-white">
-                        <span class="small card-category">Volunteer</span>
-                        <h5 class="card-title mb-1">Bersama Mengajar</h5>
-                        <p class="small mb-1"><i class="fas fa-map-marker-alt me-1"></i>Sariwangi Permasalahan</p>
-                        <p class="small mb-1"><i class="fas fa-calendar me-1"></i>3 Juli 2024</p>
-                        <p class="small mb-2"><i class="fas fa-tag me-1"></i>Rp 50.000</p>
-                        <div class="card-actions">
-                            <button class="btn-favorite" onclick="toggleFavorite(this)">
-                                <i class="far fa-heart"></i>
-                            </button>
-                            <button class="btn btn-detail" onclick="showDetail()">
-                                Lihat Detail
-                            </button>
+                                <a href="{{ route('events.show', $event) }}" class="btn btn-detail">
+                                    Lihat Detail
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="card card-hover shadow-sm border-0 rounded-4 overflow-hidden">
-                <div class="position-relative h-100">
-                    <img src="images/welcome/ryo-img.jpg" alt="Bersama Mengajar" class="w-100 h-100 object-fit-cover">
-                    <div class="overlay position-absolute bottom-0 start-0 w-100 text-white">
-                        <span class="small card-category">Volunteer</span>
-                        <h5 class="card-title mb-1">Bersama Mengajar</h5>
-                        <p class="small mb-1"><i class="fas fa-map-marker-alt me-1"></i>Sariwangi Permasalahan</p>
-                        <p class="small mb-1"><i class="fas fa-calendar me-1"></i>3 Juli 2024</p>
-                        <p class="small mb-2"><i class="fas fa-tag me-1"></i>Rp 50.000</p>
-                        <div class="card-actions">
-                            <button class="btn-favorite" onclick="toggleFavorite(this)">
-                                <i class="far fa-heart"></i>
-                            </button>
-                            <button class="btn btn-detail" onclick="showDetail()">
-                                Lihat Detail
-                            </button>
-                        </div>
-                    </div>
+            @empty
+            <div id="noResults" class="text-center mt-4">
+                <div class="alert alert-info px-5">
+                    <i class="fas fa-search me-2"></i>
+                    Belum ada event yang tersedia.
                 </div>
             </div>
+            @endforelse
         </div>
         
         <button class="scroll-button scroll-right" aria-label="Scroll right">
@@ -111,68 +91,48 @@
         </button>
         
         <div class="scrolling-wrapper">
-            <div class="card card-hover shadow-sm border-0 rounded-4 overflow-hidden">
-                <div class="position-relative h-100">
-                    <img src="images/welcome/ryo-img.jpg" alt="Bersama Mengajar" class="w-100 h-100 object-fit-cover">
-                    <div class="overlay position-absolute bottom-0 start-0 w-100 text-white">
-                        <span class="small card-category">Volunteer</span>
-                        <h5 class="card-title mb-1">Bersama Mengajar</h5>
-                        <p class="small mb-1"><i class="fas fa-map-marker-alt me-1"></i>Sariwangi Permasalahan</p>
-                        <p class="small mb-1"><i class="fas fa-calendar me-1"></i>3 Juli 2024</p>
-                        <p class="small mb-2"><i class="fas fa-tag me-1"></i>Rp 50.000</p>
-                        <div class="card-actions">
-                            <button class="btn-favorite" onclick="toggleFavorite(this)">
-                                <i class="far fa-heart"></i>
-                            </button>
-                            <button class="btn btn-detail" onclick="showDetail()">
-                                Lihat Detail
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @forelse($upcomingEvents as $event)
+                <div class="card card-hover shadow-sm border-0 rounded-4 overflow-hidden">
+                    <div class="position-relative h-100">
+                        <img src="{{ $event->banner_image ? asset('storage/' . $event->banner_image) : asset('images/no-img.jpg') }}"
+                            alt="{{ $event->title }}"
+                            class="w-100 h-100 object-fit-cover">
+                        <div class="overlay position-absolute bottom-0 start-0 w-100 text-white">
+                            <span class="small card-category">{{ $event->category }}</span>
+                            <h5 class="card-title mb-1">{{ $event->title }}</h5>
+                            <p class="small mb-1"><i class="fas fa-map-marker-alt me-1"></i>{{ $event->location }}</p>
+                            <p class="small mb-1"><i class="fas fa-calendar me-1"></i>{{ \Carbon\Carbon::parse($event->start_date)->translatedFormat('d F Y') }}</p>
+                            <p class="small mb-2"><i class="fas fa-tag me-1"></i>
+                                {{ $event->tickets->min('price') ? 'Rp ' . number_format($event->tickets->min('price'), 0, ',', '.') : 'Gratis' }}
+                            </p>
+                            <div class="card-actions d-flex align-items-center gap-2">
+                                 @auth
+                                    <button type="button" 
+                                        class="btn-favorite {{ auth()->user()->favorites->contains($event->id) ? 'favorited' : '' }}" 
+                                        onclick="toggleFavorite(this, {{ $event->id }}, {{ auth()->user()->favorites->contains($event->id) ? 'true' : 'false' }})">
+                                        <i class="{{ auth()->user()->favorites->contains($event->id) ? 'fas' : 'far' }} fa-heart"></i>
+                                    </button>
+                                @else
+                                    <a href="{{ route('login') }}" class="btn-favorite" title="Login untuk menyimpan favorit">
+                                        <i class="far fa-heart"></i>
+                                    </a>
+                                @endauth
 
-            <div class="card card-hover shadow-sm border-0 rounded-4 overflow-hidden">
-                <div class="position-relative h-100">
-                    <img src="images/welcome/ryo-img.jpg" alt="Bersama Mengajar" class="w-100 h-100 object-fit-cover">
-                    <div class="overlay position-absolute bottom-0 start-0 w-100 text-white">
-                        <span class="small card-category">Volunteer</span>
-                        <h5 class="card-title mb-1">Bersama Mengajar</h5>
-                        <p class="small mb-1"><i class="fas fa-map-marker-alt me-1"></i>Sariwangi Permasalahan</p>
-                        <p class="small mb-1"><i class="fas fa-calendar me-1"></i>3 Juli 2024</p>
-                        <p class="small mb-2"><i class="fas fa-tag me-1"></i>Rp 50.000</p>
-                        <div class="card-actions">
-                            <button class="btn-favorite" onclick="toggleFavorite(this)">
-                                <i class="far fa-heart"></i>
-                            </button>
-                            <button class="btn btn-detail" onclick="showDetail()">
-                                Lihat Detail
-                            </button>
+                                <a href="{{ route('events.show', $event) }}" class="btn btn-detail">
+                                    Lihat Detail
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="card card-hover shadow-sm border-0 rounded-4 overflow-hidden">
-                <div class="position-relative h-100">
-                    <img src="images/welcome/ryo-img.jpg" alt="Bersama Mengajar" class="w-100 h-100 object-fit-cover">
-                    <div class="overlay position-absolute bottom-0 start-0 w-100 text-white">
-                        <span class="small card-category">Volunteer</span>
-                        <h5 class="card-title mb-1">Bersama Mengajar</h5>
-                        <p class="small mb-1"><i class="fas fa-map-marker-alt me-1"></i>Sariwangi Permasalahan</p>
-                        <p class="small mb-1"><i class="fas fa-calendar me-1"></i>3 Juli 2024</p>
-                        <p class="small mb-2"><i class="fas fa-tag me-1"></i>Rp 50.000</p>
-                        <div class="card-actions">
-                            <button class="btn-favorite" onclick="toggleFavorite(this)">
-                                <i class="far fa-heart"></i>
-                            </button>
-                            <button class="btn btn-detail" onclick="showDetail()">
-                                Lihat Detail
-                            </button>
-                        </div>
-                    </div>
+            @empty
+            <div id="noResults" class="text-center mt-4">
+                <div class="alert alert-info px-5">
+                    <i class="fas fa-search me-2"></i>
+                    Belum ada event yang tersedia.
                 </div>
             </div>
+            @endforelse
         </div>
         
         <button class="scroll-button scroll-right" aria-label="Scroll right">
@@ -191,68 +151,48 @@
         </button>
         
         <div class="scrolling-wrapper">
-            <div class="card card-hover shadow-sm border-0 rounded-4 overflow-hidden">
-                <div class="position-relative h-100">
-                    <img src="images/welcome/ryo-img.jpg" alt="Bersama Mengajar" class="w-100 h-100 object-fit-cover">
-                    <div class="overlay position-absolute bottom-0 start-0 w-100 text-white">
-                        <span class="small card-category">Volunteer</span>
-                        <h5 class="card-title mb-1">Bersama Mengajar</h5>
-                        <p class="small mb-1"><i class="fas fa-map-marker-alt me-1"></i>Sariwangi Permasalahan</p>
-                        <p class="small mb-1"><i class="fas fa-calendar me-1"></i>3 Juli 2024</p>
-                        <p class="small mb-2"><i class="fas fa-tag me-1"></i>Rp 50.000</p>
-                        <div class="card-actions">
-                            <button class="btn-favorite" onclick="toggleFavorite(this)">
-                                <i class="far fa-heart"></i>
-                            </button>
-                            <button class="btn btn-detail" onclick="showDetail()">
-                                Lihat Detail
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @forelse($latestEvents as $event)
+                <div class="card card-hover shadow-sm border-0 rounded-4 overflow-hidden">
+                    <div class="position-relative h-100">
+                        <img src="{{ $event->banner_image ? asset('storage/' . $event->banner_image) : asset('images/no-img.jpg') }}"
+                            alt="{{ $event->title }}"
+                            class="w-100 h-100 object-fit-cover">
+                        <div class="overlay position-absolute bottom-0 start-0 w-100 text-white">
+                            <span class="small card-category">{{ $event->category }}</span>
+                            <h5 class="card-title mb-1">{{ $event->title }}</h5>
+                            <p class="small mb-1"><i class="fas fa-map-marker-alt me-1"></i>{{ $event->location }}</p>
+                            <p class="small mb-1"><i class="fas fa-calendar me-1"></i>{{ \Carbon\Carbon::parse($event->start_date)->translatedFormat('d F Y') }}</p>
+                            <p class="small mb-2"><i class="fas fa-tag me-1"></i>
+                                {{ $event->tickets->min('price') ? 'Rp ' . number_format($event->tickets->min('price'), 0, ',', '.') : 'Gratis' }}
+                            </p>
+                            <div class="card-actions d-flex align-items-center gap-2">
+                                 @auth
+                                    <button type="button" 
+                                        class="btn-favorite {{ auth()->user()->favorites->contains($event->id) ? 'favorited' : '' }}" 
+                                        onclick="toggleFavorite(this, {{ $event->id }}, {{ auth()->user()->favorites->contains($event->id) ? 'true' : 'false' }})">
+                                        <i class="{{ auth()->user()->favorites->contains($event->id) ? 'fas' : 'far' }} fa-heart"></i>
+                                    </button>
+                                @else
+                                    <a href="{{ route('login') }}" class="btn-favorite" title="Login untuk menyimpan favorit">
+                                        <i class="far fa-heart"></i>
+                                    </a>
+                                @endauth
 
-            <div class="card card-hover shadow-sm border-0 rounded-4 overflow-hidden">
-                <div class="position-relative h-100">
-                    <img src="images/welcome/ryo-img.jpg" alt="Bersama Mengajar" class="w-100 h-100 object-fit-cover">
-                    <div class="overlay position-absolute bottom-0 start-0 w-100 text-white">
-                        <span class="small card-category">Volunteer</span>
-                        <h5 class="card-title mb-1">Bersama Mengajar</h5>
-                        <p class="small mb-1"><i class="fas fa-map-marker-alt me-1"></i>Sariwangi Permasalahan</p>
-                        <p class="small mb-1"><i class="fas fa-calendar me-1"></i>3 Juli 2024</p>
-                        <p class="small mb-2"><i class="fas fa-tag me-1"></i>Rp 50.000</p>
-                        <div class="card-actions">
-                            <button class="btn-favorite" onclick="toggleFavorite(this)">
-                                <i class="far fa-heart"></i>
-                            </button>
-                            <button class="btn btn-detail" onclick="showDetail()">
-                                Lihat Detail
-                            </button>
+                                <a href="{{ route('events.show', $event) }}" class="btn btn-detail">
+                                    Lihat Detail
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="card card-hover shadow-sm border-0 rounded-4 overflow-hidden">
-                <div class="position-relative h-100">
-                    <img src="images/welcome/ryo-img.jpg" alt="Bersama Mengajar" class="w-100 h-100 object-fit-cover">
-                    <div class="overlay position-absolute bottom-0 start-0 w-100 text-white">
-                        <span class="small card-category">Volunteer</span>
-                        <h5 class="card-title mb-1">Bersama Mengajar</h5>
-                        <p class="small mb-1"><i class="fas fa-map-marker-alt me-1"></i>Sariwangi Permasalahan</p>
-                        <p class="small mb-1"><i class="fas fa-calendar me-1"></i>3 Juli 2024</p>
-                        <p class="small mb-2"><i class="fas fa-tag me-1"></i>Rp 50.000</p>
-                        <div class="card-actions">
-                            <button class="btn-favorite" onclick="toggleFavorite(this)">
-                                <i class="far fa-heart"></i>
-                            </button>
-                            <button class="btn btn-detail" onclick="showDetail()">
-                                Lihat Detail
-                            </button>
-                        </div>
-                    </div>
+            @empty
+            <div id="noResults" class="text-center mt-4">
+                <div class="alert alert-info px-5">
+                    <i class="fas fa-search me-2"></i>
+                    Belum ada event yang tersedia.
                 </div>
             </div>
+            @endforelse
         </div>
         
         <button class="scroll-button scroll-right" aria-label="Scroll right">
@@ -298,7 +238,7 @@
             <div class="col-lg-6">
                 <h2 class="h3 fw-bold mb-4">Jangan lewatkan acaranya, Beli tiketmu sekarang!</h2>
                 <p class="mb-4">Rasakan pengalaman seru di acara spesial ini bersama teman dan keluarga dengan mudah dan cepat hanya dalam beberapa klik!</p>
-                <a href="#" class="btn btn-outline-gradient px-4">Cari Tiket ></a>
+                <a href="{{ route('events.index') }}" class="btn btn-outline-gradient px-4">Cari Tiket ></a>
             </div>
         </div>
     </div>
@@ -333,7 +273,6 @@
 
     .scrolling-wrapper .card {
         flex: 0 0 auto;
-        width: 300px;
     }
 
     .scroll-button {

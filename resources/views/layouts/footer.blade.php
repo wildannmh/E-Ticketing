@@ -14,7 +14,7 @@
                 <h6 class="fw-bold mb-3">Menu</h6>
                 <ul class="list-unstyled">
                     <li><a href="{{ url('/') }}" class="text-muted text-decoration-none small link-hover">Home</a></li>
-                    <li><a href="{{ url('/event') }}" class="text-muted text-decoration-none small link-hover">Cari Event</a></li>
+                    <li><a href="{{ route('events.index') }}" class="text-muted text-decoration-none small link-hover">Cari Event</a></li>
                     <li><a href="{{ url('/tentang-kami') }}" class="text-muted text-decoration-none small link-hover">Tentang Kami</a></li>
                 </ul>
             </div>

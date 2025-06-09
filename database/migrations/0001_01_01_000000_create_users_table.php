@@ -17,9 +17,15 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+
+            $table->string('profile_photo')->nullable(); // ⬅️ Foto profil opsional
+            $table->string('phone')->nullable();         // ⬅️ Nomor telepon opsional
+            $table->text('address')->nullable();         // ⬅️ Alamat opsional
+
             $table->enum('role', ['admin', 'organizer', 'user'])->default('user');
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes(); // ⬅️ Soft delete
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
