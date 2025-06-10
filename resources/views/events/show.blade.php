@@ -240,13 +240,11 @@
                     </div>
 
                     <!-- Book Button -->
-                    <form action="{{ route('bookings.store') }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="event_id" value="{{ $event->id }}">
-                        <input type="hidden" name="ticket_id" value="{{ $cheapestTicket->id }}">
+                    <form id="checkout-form" method="GET" action="{{ route('ticketing.checkout', ['event' => $event->id, 'ticket' => $cheapestTicket->id]) }}">
                         <input type="hidden" name="quantity" id="quantity-hidden" value="1">
                         <button type="submit" class="btn btn-gradient w-100 mb-3">Pesan Tiket</button>
                     </form>
+
                     @endif
                 </div>
             </div>

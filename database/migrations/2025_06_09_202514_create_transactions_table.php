@@ -16,8 +16,14 @@ return new class extends Migration
             $table->foreignId('ticket_id')->constrained()->onDelete('cascade');
             $table->integer('quantity');
             $table->decimal('total_price', 10, 2);
+
+            $table->string('full_name');
+            $table->string('email');
+            $table->string('phone');
+            $table->enum('gender', ['L', 'P']);
+            $table->date('birth_date');
+
             $table->enum('status', ['pending', 'processing', 'completed', 'failed', 'cancelled']);
-            $table->text('notes')->nullable();
             $table->timestamps();
         });
     }

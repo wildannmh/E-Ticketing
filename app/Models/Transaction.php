@@ -16,8 +16,12 @@ class Transaction extends Model
         'ticket_id',
         'quantity',
         'total_price',
-        'status',
-        'notes'
+        'full_name',
+        'email',
+        'phone',
+        'gender',
+        'birth_date',
+        'status'
     ];
 
     public function user()
@@ -33,6 +37,11 @@ class Transaction extends Model
     public function ticket()
     {
         return $this->belongsTo(Ticket::class);
+    }
+
+    public function payment()
+    {
+        return $this->hasOne(Payment::class);
     }
 
     public function getStatusBadgeAttribute()

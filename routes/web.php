@@ -9,6 +9,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Profile\HistoryController;
+use App\Http\Controllers\TicketingController;
+
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -49,6 +51,19 @@ Route::resource('events', EventController::class)->only([
 
 Route::post('/events/{event}/favorite', [EventController::class, 'favorite'])->name('events.favorite');
 Route::post('/events/{event}/unfavorite', [EventController::class, 'unfavorite'])->name('events.unfavorite');
+
+Route::middleware(['auth'])->group(function () {
+    // Proses pembelian tiket
+    Route::get('/events/{event}/tickets/{ticket}/checkout', [TicketingController::class, 'showCheckoutForm'])->name('ticketing.checkout');
+    Route::post('/events/{event}/tickets/{ticket}/checkout', [TicketingController::class, 'processCheckout'])->name('ticketing.process');
+    Route::get('/transactions/{transaction}/payment', [TicketingController::class, 'showPaymentForm'])->name('ticketing.payment');
+    Route::post('/transactions/{transaction}/payment', [TicketingController::class, 'processPayment'])->name('ticketing.process-payment');
+    Route::get('/transactions/{transaction}/complete', [TicketingController::class, 'showCompletePage'])->name('ticketing.complete');
+});
+
+
+Route::get('/organizers', [OrganizerController::class, 'index'])->name('organizers.index');
+Route::get('/organizers/{organizer}', [OrganizerController::class, 'show'])->name('organizers.show');
 
 Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store')->middleware('auth');
 

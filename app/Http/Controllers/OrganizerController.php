@@ -11,6 +11,27 @@ use Illuminate\Support\Facades\Auth;
 
 class OrganizerController extends Controller
 {
+    public function show($id, Event $event)
+    {
+        $organizer = Organizer::with(['user', 'events' => function($query) {
+            $query->where('is_published', true);
+        }])->findOrFail($id);
+
+        $breadcrumbs = [
+            ['url' => route('home'), 'text' => 'Home'],
+            ['url' => route('events.index'), 'text' => 'Event'],
+            ['text' => $organizer->name]
+        ];
+
+        $price = $event->tickets->min('price') ?? 0;
+
+        // Pisahkan event tersedia dan terpublikasi
+        $availableEvents = $organizer->events->where('start_date', '>', now());
+        $publishedEvents = $organizer->events->where('start_date', '<=', now());
+
+        return view('organizer.show', compact('organizer', 'breadcrumbs', 'price', 'availableEvents', 'publishedEvents'));
+    }
+
     public function create()
     {
         // Pastikan user belum menjadi organizer

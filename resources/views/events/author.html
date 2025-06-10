@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Moeket - Cari Event</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #eaf1fc;
+    }
+    .event-card img {
+      height: 415px;
+      object-fit: cover;
+      width: 100%;
+    }
+    .event-card {
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+    }
+    .card-body {
+     position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.3); /* transparan 30% */
+    color: white;
+    padding: 1rem;
+    backdrop-filter: blur(4px); /* efek blur (opsional) */
+    }
+    .card-title, .card-body p, .card-body a {
+    color: white;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8); /* bayangan untuk keterbacaan */
+    }
+     .btn-detail {
+    background-color: rgba(255, 255, 255, 0.85);
+    color: #000;
+    border: none;
+  }
+
+  .btn-detail:hover {
+    background-color: white;
+  }
+    .profile-logo {
+      width: 64px;
+      height: 64px;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+    .profile-container {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <div class="container">
+      <a class="navbar-brand fw-bold text-primary" href="#">💡moeket</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+        data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Cari Event</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Tentang Kami</a></li>
+        </ul>
+      </div>
+      <div class="d-flex align-items-center">
+        <img src="https://via.placeholder.com/32" class="rounded-circle me-2" alt="User">
+        <span>Munawar</span>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container py-4">
+
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb bg-transparent px-0">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Cari Event</li>
+      </ol>
+    </nav>
+
+    <!-- Profile -->
+    <div class="profile-container mb-4">
+      <img src="logo.png" alt="Logo" class="profile-logo">
+      <div>
+        <h5 class="mb-0">Larasati</h5>
+        <p class="mb-0 text-muted">larasati.eo@gmail.com<br>
+          Kreatif, profesional, terpercaya, inovatif, berkesan.
+        </p>
+      </div>
+    </div>
+
+    <!-- Event Tersedia -->
+    <h5 class="fw-bold border-bottom border-primary pb-1">Event Tersedia</h5>
+    <div class="row my-3">
+      <div class="col-md-4">
+        <div class="card event-card shadow-sm">
+          <img src="artdinary.jpg" class="card-img-top" alt="Atrium Eastcoast">
+          <div class="card-body">
+            <p class="text-muted small mb-1">Expo</p>
+            <h5 class="card-title">Atrium Eastcoast</h5>
+            <p class="mb-1"><i class="bi bi-geo-alt-fill"></i> Pakuwon City Mall Surabaya</p>
+            <p class="mb-1">2 Juli 2025</p>
+            <p class="mb-3">Rp 80.000,-</p>
+            <a href="detail.html" class="btn btn-dark w-100">Lihat Detail</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Event Terpublikasi -->
+    <h5 class="fw-bold border-bottom border-primary pb-1">Event Terpublikasi</h5>
+    <div class="row my-3">
+      <div class="col-md-4">
+        <div class="card event-card shadow-sm">
+          <img src="artdinary.jpg" class="card-img-top" alt="Atrium Eastcoast">
+          <div class="card-body">
+            <p class="text-muted small mb-1">Expo</p>
+            <h5 class="card-title">Atrium Eastcoast</h5>
+            <p class="mb-1">Pakuwon City Mall Surabaya</p>
+            <p class="mb-1">2 Juli 2025</p>
+            <p class="mb-3">Rp 80.000,-</p>
+            <a href="detail.html" class="btn btn-dark w-100">Lihat Detail</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card event-card shadow-sm">
+          <img src="batik.jpg" class="card-img-top" alt="Batik Expo">
+          <div class="card-body">
+            <p class="text-muted small mb-1">Expo</p>
+            <h5 class="card-title">Batik Expo</h5>
+            <p class="mb-1">GOR Satria Purwokerto</p>
+            <p class="mb-1">25 Juli 2025</p>
+            <p class="mb-3">Rp 80.000,-</p>
+            <a href="detail.html" class="btn btn-dark w-100">Lihat Detail</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-white text-center py-4 mt-5 border-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold text-primary" href="#">💡moeket</a>
+      <p class="mb-1">Platform pemesanan tiket event terpercaya di Indonesia. Temukan event impianmu dengan mudah!</p>
+      <div class="mb-2">
+        <a href="#" class="text-decoration-none me-3">Home</a>
+        <a href="#" class="text-decoration-none me-3">Cari Event</a>
+        <a href="#" class="text-decoration-none">Tentang Kami</a>
+      </div>
+      <small class="text-muted">&copy; 2024 EventKu. All rights reserved.</small>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
