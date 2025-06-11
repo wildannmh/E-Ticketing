@@ -29,13 +29,6 @@ Route::middleware(['auth'])->get('/dashboard', function () {
     };
 })->name('');
 
-// Route::middleware(['auth'])->group(function() {
-//     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
-//     Route::get('/security', [ProfileController::class, 'security'])->name('profile.security');
-//     Route::get('/wishlist', [ProfileController::class, 'wishlist'])->name('profile.wishlist');
-//     Route::get('/history', [ProfileController::class, 'history'])->name('profile.history');
-// });
-
 Route::prefix('profile')->middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::get('/security', [ProfileController::class, 'security'])->name('profile.security');

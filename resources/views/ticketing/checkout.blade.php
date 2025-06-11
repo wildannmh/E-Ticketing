@@ -3,9 +3,9 @@
 @section('title', 'Checkout - ' . $event->title)
 
 @section('content')
-<div class="container">
+<div class="container-fluid pb-4">
     <!-- Breadcrumb -->
-    <nav aria-label="breadcrumb" class="mt-4">
+    <nav aria-label="breadcrumb" class="mt-3">
         <ol class="breadcrumb">
             @foreach($breadcrumbs as $item)
                 @if(isset($item['url']))
@@ -32,7 +32,7 @@
 
     <div class="row">
         <div class="col-md-8">
-            <div class="card shadow-sm mb-4">
+            <div class="card shadow-sm mb-4 w-100 h-100">
                 <div class="card-body">
                     <h5 class="card-title fw-bold mb-4">Data Diri</h5>
                     
@@ -78,11 +78,20 @@
                         </div>
                     </form>
                 </div>
+                @if($errors->any())
+                    <div class="alert alert-danger mx-3">
+                        <ul>
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
             </div>
         </div>
         
-        <div class="col-md-4">
-            <div class="card shadow-sm">
+        <div class="col-md-4 pb-3">
+            <div class="card shadow-sm w-100">
                 <div class="card-body">
                     <h5 class="card-title fw-bold mb-3">Ringkasan Pesanan</h5>
                     
@@ -117,6 +126,15 @@
         </div>
     </div>
 </div>
+
+<style>
+    .container-fluid {
+        padding: 0 50px;
+        padding-top: 80px;
+        background: var(--bg-default);
+    }
+</style>
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {

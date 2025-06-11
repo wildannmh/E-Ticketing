@@ -16,6 +16,7 @@ class TicketingController extends Controller
     {
         $breadcrumbs = [
             ['url' => route('home'), 'text' => 'Home'],
+            ['url' => route('events.index'), 'text' => 'Cari Event'],
             ['url' => route('events.show', $event), 'text' => $event->title],
             ['text' => 'Checkout']
         ];
@@ -70,6 +71,7 @@ class TicketingController extends Controller
     {
         $breadcrumbs = [
             ['url' => route('home'), 'text' => 'Home'],
+            ['url' => route('events.index'), 'text' => 'Cari Event'],
             ['url' => route('events.show', $transaction->event), 'text' => $transaction->event->title],
             ['url' => route('ticketing.checkout', [$transaction->event, $transaction->ticket]), 'text' => 'Checkout'],
             ['text' => 'Pembayaran']
@@ -102,32 +104,46 @@ class TicketingController extends Controller
             'bank_name' => 'required|string|max:255',
             'account_number' => 'required|string|max:255',
             'account_name' => 'required|string|max:255',
-            'proof_image' => 'required|image|mimes:jpeg,png,jpg|max:2048'
+            'proof_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048' // Added gif and fixed validation
         ]);
 
-        // Simpan bukti pembayaran
-        $imagePath = $request->file('proof_image')->store('payment_proofs', 'public');
+        // If hidden fields are empty but bank is selected, get the details from the bank data
+        if (empty($request->account_number) && $request->bank_name) {
+            $bank = collect($banks)->firstWhere('name', $request->bank_name);
+            if ($bank) {
+                $request->merge([
+                    'account_number' => $bank['account_number'],
+                    'account_name' => $bank['account_name']
+                ]);
+            }
+        }
 
-        // Buat pembayaran
-        Payment::create([
-            'transaction_id' => $transaction->id,
-            'bank_name' => $validated['bank_name'],
-            'account_number' => $validated['account_number'],
-            'account_name' => $validated['account_name'],
-            'proof_image' => $imagePath,
-            'status' => 'pending'
-        ]);
+        // Handle file upload
+        if ($request->hasFile('proof_image')) {
+            $imagePath = $request->file('proof_image')->store('payment_proofs', 'public');
+            
+            Payment::create([
+                'transaction_id' => $transaction->id,
+                'bank_name' => $validated['bank_name'],
+                'account_number' => $validated['account_number'],
+                'account_name' => $validated['account_name'],
+                'proof_image' => $imagePath,
+                'status' => 'pending'
+            ]);
 
-        // Update status transaksi
-        $transaction->update(['status' => 'processing']);
+            $transaction->update(['status' => 'processing']);
+            
+            return redirect()->route('ticketing.complete', $transaction);
+        }
 
-        return redirect()->route('ticketing.complete', $transaction);
+        return back()->withErrors(['proof_image' => 'File upload failed']);
     }
 
     public function showCompletePage(Transaction $transaction)
     {
         $breadcrumbs = [
             ['url' => route('home'), 'text' => 'Home'],
+            ['url' => route('events.index'), 'text' => 'Cari Event'],
             ['url' => route('events.show', $transaction->event), 'text' => $transaction->event->title],
             ['url' => route('ticketing.checkout', [$transaction->event, $transaction->ticket]), 'text' => 'Checkout'],
             ['url' => route('ticketing.payment', $transaction), 'text' => 'Pembayaran'],
