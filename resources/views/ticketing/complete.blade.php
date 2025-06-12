@@ -3,7 +3,7 @@
 @section('title', 'Pesanan Selesai - ' . $transaction->event->title)
 
 @section('content')
-<div class="container">
+<div class="container-fluid pb-4">
     <!-- Breadcrumb -->
     <nav aria-label="breadcrumb" class="mt-4">
         <ol class="breadcrumb">
@@ -31,7 +31,7 @@
 
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card shadow-sm text-center">
+            <div class="card shadow-sm text-center mb-4 w-100 h-100">
                 <div class="card-body py-5">
                     <div class="checkmark mb-4">
                         <i class="fas fa-check-circle text-success" style="font-size: 60px;"></i>
@@ -63,4 +63,12 @@
         </div>
     </div>
 </div>
+
+<style>
+    .container-fluid {
+        padding: 0 50px;
+        padding-top: 80px;
+        background: var(--bg-default);
+    }
+</style>
 @endsection

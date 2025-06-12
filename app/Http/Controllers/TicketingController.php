@@ -9,6 +9,7 @@ use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class TicketingController extends Controller
 {
@@ -100,44 +101,32 @@ class TicketingController extends Controller
 
     public function processPayment(Request $request, Transaction $transaction)
     {
-        $validated = $request->validate([
-            'bank_name' => 'required|string|max:255',
-            'account_number' => 'required|string|max:255',
-            'account_name' => 'required|string|max:255',
-            'proof_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048' // Added gif and fixed validation
+        $request->validate([
+            'bank_account_id' => 'required|exists:bank_accounts,id',
+            'proof_image' => 'required|image|mimes:jpeg,png|max:2048',
         ]);
 
-        // If hidden fields are empty but bank is selected, get the details from the bank data
-        if (empty($request->account_number) && $request->bank_name) {
-            $bank = collect($banks)->firstWhere('name', $request->bank_name);
-            if ($bank) {
-                $request->merge([
-                    'account_number' => $bank['account_number'],
-                    'account_name' => $bank['account_name']
-                ]);
-            }
-        }
-
-        // Handle file upload
+        // Simpan bukti transfer
         if ($request->hasFile('proof_image')) {
-            $imagePath = $request->file('proof_image')->store('payment_proofs', 'public');
-            
-            Payment::create([
-                'transaction_id' => $transaction->id,
-                'bank_name' => $validated['bank_name'],
-                'account_number' => $validated['account_number'],
-                'account_name' => $validated['account_name'],
-                'proof_image' => $imagePath,
-                'status' => 'pending'
-            ]);
-
-            $transaction->update(['status' => 'processing']);
-            
-            return redirect()->route('ticketing.complete', $transaction);
+            $path = $request->file('proof_image')->store('payment_proofs', 'public');
+        } else {
+            return back()->withErrors(['proof_image' => 'Bukti transfer tidak ditemukan.']);
         }
 
-        return back()->withErrors(['proof_image' => 'File upload failed']);
+        // Simpan ke tabel payments
+        Payment::create([
+            'transaction_id' => $transaction->id,
+            'bank_account_id' => $request->bank_account_id,
+            'proof_image' => $path,
+            'status' => 'pending'
+        ]);
+
+        return redirect()->route('ticketing.complete', $transaction->id)
+                        ->with('success', 'Pembayaran berhasil dikirim! Mohon tunggu konfirmasi.');
     }
+
+
+
 
     public function showCompletePage(Transaction $transaction)
     {

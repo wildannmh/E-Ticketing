@@ -82,4 +82,6 @@
   </div>
 </div>
 @include('profile._style')
+@include('profile.modals.edit-profile')
+@include('profile.modals.edit-personal')
 @endsection

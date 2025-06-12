@@ -31,7 +31,7 @@
                     <!-- My Admin - Tampilkan hanya untuk role 'admin' -->
                     @if(auth()->user()->role === 'admin')
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('admin.dashboard') }}">My Admin</a>
+                            <a class="nav-link" href="{{ filament()->getUrl() }}">My Admin</a>
                         </li>
                     @endif
                 @endauth

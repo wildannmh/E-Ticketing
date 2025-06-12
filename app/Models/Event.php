@@ -29,6 +29,13 @@ class Event extends Model
         'is_published' => 'boolean',
     ];
 
+    protected $appends = ['approval_status'];
+
+    public function getApprovalStatusAttribute()
+    {
+        return $this->is_published ? 'Published' : 'Unpublished';
+    }
+
     public function organizer()
     {
         return $this->belongsTo(Organizer::class);

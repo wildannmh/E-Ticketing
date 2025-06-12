@@ -18,19 +18,20 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Auth::routes();
 
-Route::middleware(['auth'])->get('/dashboard', function () {
-    $role = auth()->user()->role;
+// Route::middleware(['auth'])->get('/dashboard', function () {
+//     $role = auth()->user()->role;
 
-    return match ($role) {
-        'admin' => view('admin.dashboard'),
-        'organizer' => view('organizer.dashboard'),
-        'user' => view('welcome'),
-        default => abort(403),
-    };
-})->name('');
+//     return match ($role) {
+//         'admin' => view('admin.dashboard'),
+//         'organizer' => view('organizer.dashboard'),
+//         'user' => view('welcome'),
+//         default => abort(403),
+//     };
+// })->name('');
 
 Route::prefix('profile')->middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::get('/security', [ProfileController::class, 'security'])->name('profile.security');
     Route::get('/wishlist', [ProfileController::class, 'wishlist'])->name('profile.wishlist');
     Route::get('/history', [HistoryController::class, 'index'])->name('profile.history');
@@ -46,7 +47,6 @@ Route::post('/events/{event}/favorite', [EventController::class, 'favorite'])->n
 Route::post('/events/{event}/unfavorite', [EventController::class, 'unfavorite'])->name('events.unfavorite');
 
 Route::middleware(['auth'])->group(function () {
-    // Proses pembelian tiket
     Route::get('/events/{event}/tickets/{ticket}/checkout', [TicketingController::class, 'showCheckoutForm'])->name('ticketing.checkout');
     Route::post('/events/{event}/tickets/{ticket}/checkout', [TicketingController::class, 'processCheckout'])->name('ticketing.process');
     Route::get('/transactions/{transaction}/payment', [TicketingController::class, 'showPaymentForm'])->name('ticketing.payment');
@@ -80,6 +80,3 @@ Route::middleware(['auth'])->post('/organizer/register', [OrganizerController::c
 
 
 Route::middleware(['auth', 'organizer'])->get('/organizer/dashboard', [OrganizerController::class, 'dashboard'])->name('organizer.dashboard');
-
-
-Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard')->middleware(['auth', 'admin']);

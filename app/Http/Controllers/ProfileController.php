@@ -48,6 +48,40 @@ class ProfileController extends Controller
         return view('profile.wishlist', compact('user', 'breadcrumbs', 'events'));
     }
 
+    public function update(Request $request)
+    {
+        $user = Auth::user();
+        
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,'.$user->id,
+            'phone' => 'nullable|string|max:20',
+            'address' => 'nullable|string|max:500',
+            'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
+        ]);
+        
+        // Update basic info
+        $user->name = $validated['name'];
+        $user->email = $validated['email'];
+        $user->phone = $validated['phone'];
+        $user->address = $validated['address'];
+        
+        // Handle profile photo upload
+        if ($request->hasFile('profile_photo')) {
+            // Delete old photo if exists
+            if ($user->profile_photo) {
+                Storage::delete($user->profile_photo);
+            }
+            
+            // Store new photo
+            $path = $request->file('profile_photo')->store('profile-photos');
+            $user->profile_photo = $path;
+        }
+        
+        $user->save();
+        
+        return response()->json(['message' => 'Profile updated successfully']);
+    }
     // public function history()
     // {
     //     $user = Auth::user();

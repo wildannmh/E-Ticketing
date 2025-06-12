@@ -35,6 +35,16 @@
             <div class="card shadow-sm mb-4 w-100 h-100">
                 <div class="card-body">
                     <h5 class="card-title fw-bold mb-4">Selesaikan Pembayaran</h5>
+
+                    <div class="alert alert-warning mb-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <i class="fas fa-clock me-2"></i>
+                                Selesaikan pembayaran sebelum:
+                            </div>
+                            <div id="payment-countdown" class="fw-bold"></div>
+                        </div>
+                    </div>
                     
                     <div class="alert alert-info">
                         <h6>Detail Pesanan</h6>
@@ -47,37 +57,37 @@
                         
                         <!-- Bank Selection -->
                         <div class="mb-4">
-                            <label class="form-label fw-bold">Kirim pembayaran ke:</label>
+                            <label class="form-label fw-bold">Pilih Bank Tujuan:</label>
                             
-                            @foreach($banks as $bank)
+                            @foreach(\App\Models\BankAccount::active()->get() as $bank)
                                 <div class="form-check mb-3">
-                                    <input class="form-check-input" type="radio" name="bank_name" 
-                                        id="bank{{ $loop->index }}" value="{{ $bank['name'] }}" 
-                                        data-account-number="{{ $bank['account_number'] }}"
-                                        data-account-name="{{ $bank['account_name'] }}"
-                                        required>
-                                    <label class="form-check-label d-flex align-items-center" for="bank{{ $loop->index }}">
-                                        <img src="{{ asset('images/banks/' . strtolower($bank['name']) . '.png') }}" 
-                                            alt="{{ $bank['name'] }}" class="bank-logo me-2" width="40">
+                                    <input class="form-check-input" type="radio" name="bank_account_id" 
+                                        id="bank{{ $bank->id }}" value="{{ $bank->id }}" required
+                                        @if(old('bank_account_id') == $bank->id) checked @endif>
+                                    <label class="form-check-label d-flex align-items-center" for="bank{{ $bank->id }}">
+                                        <img src="{{ asset('images/banks/' . Str::slug($bank->bank_name) . '.png') }}" 
+                                            alt="{{ $bank->bank_name }}" class="bank-logo me-2" width="40">
                                         <div>
-                                            <strong>Bank {{ $bank['name'] }}</strong><br>
-                                            {{ $bank['account_number'] }} a.n {{ $bank['account_name'] }}
+                                            <strong>Bank {{ $bank->bank_name }}</strong><br>
+                                            {{ $bank->account_number }} a.n {{ $bank->account_name }}
                                         </div>
                                     </label>
                                 </div>
                             @endforeach
-                            <input type="hidden" id="account_number" name="account_number" value="{{ old('account_number') }}">
-                            <input type="hidden" id="account_name" name="account_name" value="{{ old('account_name') }}">
-                            @error('bank_name')
+                            
+                            @error('bank_account_id')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
                         
                         <!-- File Upload -->
                         <div class="mb-4">
-                            <label for="proof_image" class="form-label fw-bold">Upload bukti pembayaran:</label>
+                            <label for="proof_image" class="form-label fw-bold">Upload Bukti Transfer:</label>
                             <input type="file" class="form-control @error('proof_image') is-invalid @enderror" 
-                                id="proof_image" name="proof_image" required>
+                                id="proof_image" name="proof_image" accept="image/jpeg,image/png" required>
+                            <div class="file-upload-preview mt-2 d-none">
+                                <img id="preview-image" src="#" alt="Preview" class="img-thumbnail" style="max-height: 150px;">
+                            </div>
                             @error('proof_image')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -85,22 +95,14 @@
                         </div>
 
                         <div class="text-end mt-4">
-                            <button type="submit" class="btn btn-primary">Selanjutnya</button>
+                            <button type="submit" class="btn btn-primary">Kirim Pembayaran</button>
                         </div>
                     </form>
                 </div>
-                @if($errors->any())
-                    <div class="alert alert-danger mx-3">
-                        <ul>
-                            @foreach($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
             </div>
         </div>
         
+        <!-- Order Summary (unchanged) -->
         <div class="col-md-4">
             <div class="card shadow-sm w-100">
                 <div class="card-body">
@@ -144,47 +146,55 @@
         padding-top: 80px;
         background: var(--bg-default);
     }
+    
+    .bank-logo {
+        border-radius: 4px;
+        object-fit: contain;
+    }
+    
+    .file-upload-preview {
+        transition: all 0.3s ease;
+    }
 </style>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const form = document.querySelector('form');
-        const bankRadios = document.querySelectorAll('input[name="bank_name"]');
-        const accountNumberInput = document.getElementById('account_number');
-        const accountNameInput = document.getElementById('account_name');
+        // Countdown timer
+        function updateCountdown() {
+            const paymentDeadline = new Date('{{ $transaction->created_at->addMinutes(15)->toIso8601String() }}').getTime();
+            const now = new Date().getTime();
+            const distance = paymentDeadline - now;
 
-        // Set initial values if a bank is already selected
-        bankRadios.forEach(radio => {
-            if (radio.checked) {
-                accountNumberInput.value = radio.dataset.accountNumber;
-                accountNameInput.value = radio.dataset.accountName;
-            }
-        });
-
-        // Update values when bank selection changes
-        bankRadios.forEach(radio => {
-            radio.addEventListener('change', function() {
-                if (this.checked) {
-                    accountNumberInput.value = this.dataset.accountNumber;
-                    accountNameInput.value = this.dataset.accountName;
-                }
-            });
-        });
-
-        // Validate before form submission
-        form.addEventListener('submit', function(e) {
-            const selectedBank = document.querySelector('input[name="bank_name"]:checked');
-            
-            if (!selectedBank) {
-                e.preventDefault();
-                alert('Please select a bank');
+            if (distance < 0) {
+                document.getElementById('payment-countdown').innerHTML = "Waktu pembayaran telah habis!";
+                document.querySelector('form button[type="submit"]').disabled = true;
                 return;
             }
 
-            // Ensure hidden fields are set
-            if (!accountNumberInput.value || !accountNameInput.value) {
-                accountNumberInput.value = selectedBank.dataset.accountNumber;
-                accountNameInput.value = selectedBank.dataset.accountName;
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('payment-countdown').innerHTML = 
+                `${minutes} menit ${seconds} detik`;
+        }
+
+        updateCountdown();
+        const countdownInterval = setInterval(updateCountdown, 1000);
+
+        // Image preview
+        document.getElementById('proof_image').addEventListener('change', function(e) {
+            const preview = document.getElementById('preview-image');
+            const previewContainer = document.querySelector('.file-upload-preview');
+            
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    previewContainer.classList.remove('d-none');
+                }
+                
+                reader.readAsDataURL(this.files[0]);
             }
         });
     });

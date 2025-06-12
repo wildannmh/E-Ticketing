@@ -11,9 +11,7 @@ class Payment extends Model
 
     protected $fillable = [
         'transaction_id',
-        'bank_name',
-        'account_number',
-        'account_name',
+        'bank_account_id',
         'proof_image',
         'status'
     ];

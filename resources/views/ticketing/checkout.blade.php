@@ -69,7 +69,7 @@
                             <div class="col-md-6">
                                 <label for="quantity" class="form-label">Jumlah Tiket (Tersedia: {{ $ticket->remaining }})</label>
                                 <input type="number" class="form-control" id="quantity" name="quantity" 
-                                       min="1" max="{{ $ticket->remaining }}" value="1" required>
+                                       min="1" max="{{ $ticket->remaining }}" value="{{ request()->get('quantity', 1) }}" required>
                             </div>
                         </div>
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Profile;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Transaction;
+use App\Models\Payment; // Add this line
 
 class HistoryController extends Controller
 {
@@ -16,7 +17,7 @@ class HistoryController extends Controller
             ['text' => 'Riwayat Pembelian']
         ];
 
-        $transactions = Transaction::with(['event', 'ticket'])
+        $transactions = Transaction::with(['event', 'ticket', 'payment']) // Add payment relationship
             ->where('user_id', auth()->id())
             ->latest()
             ->paginate(10);
@@ -35,6 +36,12 @@ class HistoryController extends Controller
             abort(403);
         }
 
-        return view('profile.history_detail', compact('transaction'));
+        // Load payment information
+        $payment = $transaction->payment;
+
+        return view('profile.history_detail', [
+            'transaction' => $transaction,
+            'payment' => $payment
+        ]);
     }
 }

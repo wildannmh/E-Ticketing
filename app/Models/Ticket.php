@@ -15,7 +15,8 @@ class Ticket extends Model
         'price',
         'quantity',
         'remaining',
-        'description'
+        'description',
+        'bank_account_id'
     ];
 
     protected static function boot()
@@ -32,5 +33,10 @@ class Ticket extends Model
     public function event()
     {
         return $this->belongsTo(Event::class);
+    }
+
+    public function bankAccount()
+    {
+        return $this->belongsTo(\App\Models\BankAccount::class);
     }
 }

@@ -34,10 +34,10 @@ class UserSeeder extends Seeder
         ]);
 
         // Jalankan seeder lainnya
-        $this->call([
-            EventSeeder::class,
-        ]);
+        // $this->call([
+        //     EventSeeder::class,
+        // ]);
 
-        \App\Models\User::factory()->count(50)->create();
+        // \App\Models\User::factory()->count(50)->create();
     }
 }
