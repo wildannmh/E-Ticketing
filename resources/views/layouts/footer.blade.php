@@ -18,20 +18,20 @@
                     <li><a href="{{ url('/tentang-kami') }}" class="text-muted text-decoration-none small link-hover">Tentang Kami</a></li>
                 </ul>
             </div>
-            <div class="col-md-2">
+            {{-- <div class="col-md-2">
                 <h6 class="fw-bold mb-3">Bantuan</h6>
                 <ul class="list-unstyled">
                     <li><a href="#" class="text-muted text-decoration-none small link-hover">FAQ</a></li>
                     <li><a href="#" class="text-muted text-decoration-none small link-hover">Kontak</a></li>
                     <li><a href="#" class="text-muted text-decoration-none small link-hover">Kebijakan</a></li>
                 </ul>
-            </div>
+            </div> --}}
             <div class="col-md-2">
                 <h6 class="fw-bold mb-3">Ikuti Kami</h6>
                 <div class="d-flex">
-                    <a href="#" class="text-muted me-3 social-icon"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="text-muted me-3 social-icon"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="text-muted me-3 social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/" class="text-muted me-3 social-icon" target="_top"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://x.com/" class="text-muted me-3 social-icon" target="_top"><i class="fab fa-twitter"></i></a>
+                    <a href="https://www.instagram.com/" class="text-muted me-3 social-icon" target="_top"><i class="fab fa-instagram"></i></a>
                 </div>
             </div>
         </div>

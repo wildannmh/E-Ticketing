@@ -40,7 +40,18 @@
 
     <div class="mb-3">
         <label for="category" class="form-label">Kategori</label>
-        <input type="text" name="category" id="category" class="form-control" value="{{ old('category', $event->category ?? '') }}" required>
+        <select name="category" id="category" class="form-select" required>
+            <option value="">-- Pilih Kategori --</option>
+            @php
+                $categories = ['Festival', 'Konser', 'Expo', 'Volunteer'];
+                $selectedCategory = old('category', $event->category ?? '');
+            @endphp
+            @foreach($categories as $category)
+                <option value="{{ $category }}" {{ $selectedCategory === $category ? 'selected' : '' }}>
+                    {{ $category }}
+                </option>
+            @endforeach
+        </select>
     </div>
 
     <div class="mb-3">

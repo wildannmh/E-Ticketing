@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card">
+            <div class="card w-100 h-100">
                 <div class="card-header">Buat Profil Organizer</div>
 
                 <div class="card-body">
@@ -48,4 +48,13 @@
         </div>
     </div>
 </div>
+
+<style>
+    .container-fluid {
+        padding: 0 50px;
+        padding-top: 90px;
+        padding-bottom: 4rem;
+        background: var(--bg-default);
+    }
+</style>
 @endsection

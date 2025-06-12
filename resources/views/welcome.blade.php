@@ -208,7 +208,7 @@
             <div class="col-lg-8">
                 <h2 class="h3 fw-bold mb-4">Punya event ? Jual Tiketmu di <span style="color: #ffd700;">🎫 moeket</span> !</h2>
                 <p class="lead mb-4">Platform terpercaya untuk menjual tiket event, solusi cerdas untuk mensukseskan event Anda!</p>
-                <a href="{{ route('organizer.create') }}" class="btn btn-light btn-lg px-4">Daftar Sebagai Penyelenggara ></a>
+                <a href="mailto:wildanhabib436@gmail.com" class="btn btn-light btn-lg px-4" target="_top">Daftar Sebagai Penyelenggara ></a>
             </div>
         </div>
     </div>
@@ -221,15 +221,15 @@
             <div class="col-lg-6 custom-image-layout">
                 <div class="experience-container">
                     <div class="large-image-container">
-                        <img src="images/welcome/ryo-img.jpg" 
+                        <img src="images/welcome/konser.jpg" 
                             class="large-image" 
                             alt="Event Experience">
                     </div>
                     <div class="small-images-container">
-                        <img src="images/welcome/ryo-img.jpg" 
+                        <img src="images/welcome/expo.jpg" 
                             class="small-image" 
                             alt="Event Experience">
-                        <img src="images/welcome/ryo-img.jpg" 
+                        <img src="images/welcome/volunteer.jpg" 
                             class="small-image" 
                             alt="Event Experience">
                     </div>

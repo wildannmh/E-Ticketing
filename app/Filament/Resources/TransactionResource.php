@@ -99,10 +99,10 @@ class TransactionResource extends Resource
                     'failed' => 'Failed',
                     'cancelled' => 'Cancelled',
                 ])
-            ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-            ]);
+                ]);
+            // ->actions([
+            //     Tables\Actions\EditAction::make(),
+            // ]);
     }
 
     public static function getPages(): array
