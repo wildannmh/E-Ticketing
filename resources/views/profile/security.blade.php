@@ -38,22 +38,37 @@
         <!-- Content -->
         <div class="col-md-9 ps-md-4">
           <h5 class="fw-bold mb-4">Keamanan</h5>
-          <form id="formKeamanan">
+          <form id="formKeamanan" method="POST" action="{{ route('profile.security.update') }}">
+            @csrf
+            @method('PUT')
             <div class="mb-3">
               <label for="oldPassword" class="form-label">Password Lama</label>
-              <input type="password" class="form-control" id="oldPassword" placeholder="Masukkan password lama" />
+              <input type="password" class="form-control" name="old_password" id="oldPassword" placeholder="Masukkan password lama" required />
             </div>
             <div class="mb-3">
               <label for="newPassword" class="form-label">Password Baru</label>
-              <input type="password" class="form-control" id="newPassword" placeholder="Masukkan password baru" />
+              <input type="password" class="form-control" name="new_password" id="newPassword" placeholder="Masukkan password baru" required />
             </div>
             <div class="mb-3">
               <label for="confirmPassword" class="form-label">Konfirmasi Password</label>
-              <input type="password" class="form-control" id="confirmPassword" placeholder="Ulangi password baru" />
+              <input type="password" class="form-control" name="new_password_confirmation" id="confirmPassword" placeholder="Ulangi password baru" required />
             </div>
             <button type="submit" class="btn btn-gradient">Simpan</button>
           </form>
         </div>
+        @if(session('success'))
+          <div class="alert alert-success mt-3">{{ session('success') }}</div>
+        @endif
+
+        @if($errors->any())
+          <div class="alert alert-danger mt-3">
+            <ul class="mb-0">
+              @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+              @endforeach
+            </ul>
+          </div>
+        @endif
     </div>
   </div>
 </div>

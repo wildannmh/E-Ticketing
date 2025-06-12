@@ -13,7 +13,7 @@
                 <a href="#events" class="btn btn-outline-light btn-lg px-4">Dapatkan Tiket ></a>
             </div>
             <div class="col-lg-6 text-end">
-                <img src="images/welcome/singer.png" alt="Event Image" class="img-fluid" style="max-width: 400px; border-radius: 20px 20px 0px 0px;">
+                <img src="images/welcome/singer.png" alt="Event Image" class="img-fluid" style="width: 400px; border-radius: 20px 20px 0px 0px;">
             </div>
         </div>
     </div>

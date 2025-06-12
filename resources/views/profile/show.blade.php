@@ -81,6 +81,97 @@
     </div>
   </div>
 </div>
+<script>
+$(document).ready(function() {
+  console.log("Document ready - script loaded");
+  
+  // Handle profile edit button
+  $('#editProfile').click(function() {
+    console.log("Edit Profile button clicked");
+    $('#editProfileModal').modal('show');
+  });
+  
+  // Handle personal info edit button
+  $('#editPersonal').click(function() {
+    console.log("Edit Personal button clicked");
+    $('#editPersonalModal').modal('show');
+  });
+  
+  // Preview profile image before upload
+  $('#profilePhoto').change(function(e) {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        $('#profileImagePreview').attr('src', event.target.result);
+      }
+      reader.readAsDataURL(file);
+    }
+  });
+  
+  // Handle form submissions with AJAX
+  $('#profileForm, #personalInfoForm').submit(function(e) {
+    e.preventDefault();
+    const form = $(this);
+    const formData = new FormData(form[0]);
+    
+    $.ajax({
+      url: form.attr('action'),
+      type: 'POST',
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function(response) {
+        toastr.success('Profil berhasil diperbarui');
+        form.closest('.modal').modal('hide');
+        setTimeout(() => location.reload(), 1000);
+      },
+      error: function(xhr) {
+        toastr.error(xhr.responseJSON.message || 'Terjadi kesalahan');
+      }
+    });
+  });
+  
+  // Initialize Toastr
+  toastr.options = {
+    "closeButton": true,
+    "progressBar": true,
+    "positionClass": "toast-top-right",
+    "timeOut": "5000",
+    "escapeHtml": true,
+    // Custom styling untuk warna teks
+    "toastClass": "toast-black-text",
+    "iconClasses": {
+      "success": "toast-success-black",
+      "error": "toast-error",
+      "info": "toast-info",
+      "warning": "toast-warning"
+    }
+  };
+});
+</script>
+<style>
+  .toast-black-text {
+    color: #000000 !important;
+    margin-top: 4rem;
+  }
+  
+  .toast-success-black {
+    background-color: #d4edda !important;
+    color: #000000 !important;
+    border-color: #c3e6cb !important;
+  }
+  
+  /* Optional: styling untuk konten */
+  .toast-black-text .toast-message {
+    color: #000000 !important;
+  }
+  
+  .toast-black-text .toast-title {
+    color: #000000 !important;
+    font-weight: bold;
+  }
+</style>
 @include('profile._style')
 @include('profile.modals.edit-profile')
 @include('profile.modals.edit-personal')

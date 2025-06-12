@@ -32,6 +32,12 @@ Auth::routes();
 Route::prefix('profile')->middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    // GET: Tampilkan halaman keamanan
+    Route::get('/profile/security', [ProfileController::class, 'showSecurity'])->name('profile.security');
+
+    // PUT: Proses update password
+    Route::put('/profile/security', [ProfileController::class, 'updatePassword'])->name('profile.security.update');
+
     Route::get('/security', [ProfileController::class, 'security'])->name('profile.security');
     Route::get('/wishlist', [ProfileController::class, 'wishlist'])->name('profile.wishlist');
     Route::get('/history', [HistoryController::class, 'index'])->name('profile.history');
